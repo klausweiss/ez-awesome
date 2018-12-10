@@ -1,29 +1,35 @@
-local function_getter_dispatcher = function(dispatching_function)
+local function_setter_dispatcher = function (setter)
    return {
-      __newindex = function(_table, key, value)
-	 return dispatching_function(key, value)
+      __newindex = function (_table, key, value)
+	 return setter(key, value)
       end
    }
 end
 
-local module_getter_setter_dispatcher = function(module_)
-   local dispatching_function = module_[1]
-   local constants_table = module_[2]
+local table_getter_setter_dispatcher = function (module_)
+   local setter = module_[1]
+   local getter = module_[2]
+
+   -- support table of constants and a getter function
+   local type_getters = {}
+   type_getters["table"] = function (table_, key) return table_[key] end
+   type_getters["function"] = function (_table, key) return getter(key) end
+   local getter_function = type_getters[type(getter)]
+
    return {
-      __newindex = function(_table, key, value)
-	 return dispatching_function(key, value)
+      __newindex = function (_table, key, value)
+	 return setter(key, value)
       end,
-      __index = function(_table, key)
-	 return constants_table[key]
-      end
+      __index = getter_function
    }
 end
 
+-- support submodules exporting only setter and those exporting both setter and getter
 local type_dispatcher = {}
-type_dispatcher["table"] = module_getter_setter_dispatcher
-type_dispatcher["function"] = function_getter_dispatcher
+type_dispatcher["table"] = table_getter_setter_dispatcher
+type_dispatcher["function"] = function_setter_dispatcher
 
-local submodule = function(module_)
+local submodule = function (module_)
    local dispatcher = type_dispatcher[type(module_)]
    local meta_table = dispatcher(module_)
    return setmetatable({}, meta_table)
