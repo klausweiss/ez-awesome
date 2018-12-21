@@ -6,7 +6,7 @@ local function_setter_dispatcher = function (setter)
    }
 end
 
-local table_getter_setter_dispatcher = function (module_)
+local table_setter_getter_dispatcher = function (module_)
    local setter = module_[1]
    local getter = module_[2]
 
@@ -26,7 +26,7 @@ end
 
 -- support submodules exporting only setter and those exporting both setter and getter
 local type_dispatcher = {}
-type_dispatcher["table"] = table_getter_setter_dispatcher
+type_dispatcher["table"] = table_setter_getter_dispatcher
 type_dispatcher["function"] = function_setter_dispatcher
 
 local submodule = function (module_)
