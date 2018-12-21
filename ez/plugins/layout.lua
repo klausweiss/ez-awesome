@@ -8,9 +8,7 @@ local setters = {
    end
 }
 
-local setter = function (key, value)
-   return setters[key](value)
-end
+local setter = function (key, value) return setters[key](value) end
 
 local layouts = {
    tile        = a_layouts.tile,
