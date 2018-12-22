@@ -3,7 +3,6 @@ local stdlib = require("ez.stdlib")
 
 
 local noop = stdlib.noop
-local settertable = stdlib.settertable
 
 local buttons_numbers = {
    wheel_up    = 4,
@@ -21,6 +20,9 @@ local new_buttons_map = function (prefix)
     local buttons_map = {}
     for button, number in pairs(buttons_numbers) do
 	local key = prefix .. "_" .. button
+	if not buttons_map[key] then
+	   buttons_map[key] = {}
+	end
 	buttons_map[key][{}] = noop
     end 
     return buttons_map
@@ -31,7 +33,6 @@ local buttons_maps = {
    client  = new_buttons_map("client"),
 }
 
-
 -- transforms a buttons_map to a buttons_table
 -- understandable by awful
 local to_buttons_table = function (prefix)
@@ -41,7 +42,7 @@ local to_buttons_table = function (prefix)
       local key = prefix .. "_" .. button_name
       for combo, callback in pairs(buttons_map[key]) do
 	 local button = awful.button(combo, button_number, callback)
-	 table.insert(buttons_table, button)
+	 stdlib.extendtable(buttons_table, button)
       end
    end
    return buttons_table
@@ -65,6 +66,9 @@ local setters = {}
 for button_name, number in pairs(buttons_numbers) do
    for prefix, table_ in pairs(buttons_maps) do
       local key = prefix .. "_" .. button_name
+      if not table_[key] then
+	 table_[key] = {}
+      end
       setters[key] = function (callback)
 	 table_[key][{}] = callback
       end
@@ -83,7 +87,10 @@ local getters = {
 for button_name, number in pairs(buttons_numbers) do
    for prefix, table_ in pairs(buttons_maps) do
       local key = prefix .. "_" .. button_name
-      getters[key] = settertable(function (combo, callback)
+      getters[key] = stdlib.settertable(function (combo, callback)
+	    if not table_[key] then
+	       table_[key] = {}
+	    end
 	    table_[key][combo] = callback
       end)
    end
