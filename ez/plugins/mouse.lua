@@ -47,6 +47,15 @@ local to_buttons_table = function (prefix)
    return buttons_table
 end
 
+local get_client_buttons = function ()
+   return to_buttons_table("client")
+end
+
+local set_desktop_buttons = function ()
+   local buttons_table = to_buttons_table("desktop")
+   root.buttons(buttons_table)
+end
+
 -- default setters:
 --
 --   ez.mouse.desktop_click = show_menu
@@ -62,12 +71,15 @@ for button_name, number in pairs(buttons_numbers) do
    end
 end
 
+-- private interface
+local getters = {
+   __get_client_buttons = get_client_buttons,
+}
 -- combo setters:
 --
 --   ez.mouse.desktop_click[{alt, ctrl}] = show_menu
 --   ...
 --
-local getters = {}
 for button_name, number in pairs(buttons_numbers) do
    for prefix, table_ in pairs(buttons_maps) do
       local key = prefix .. "_" .. button_name
@@ -77,20 +89,11 @@ for button_name, number in pairs(buttons_numbers) do
    end
 end
 
-local set_desktop_buttons = function ()
-   local buttons_table = to_buttons_table("desktop")
-   root.buttons(buttons_table)
-end
-
-local get_client_buttons = function ()
-   return to_buttons_table("client")
-end
-
-
 local setter = function (key, value) return setters[key](value) end 
 local getter = function (key) return getters[key] end
 
 return {
    setter = setter,
    getter = getter,
+   setup  = set_desktop_buttons,
 }
