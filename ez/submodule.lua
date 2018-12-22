@@ -47,7 +47,13 @@ type_dispatcher["function"] = function_setter_dispatcher
 local submodule = function (module_)
    local dispatcher = type_dispatcher[type(module_)]
    local meta_table = dispatcher(module_)
-   return setmetatable({}, meta_table), module_.setup
+
+   local setup
+   if type(module_) == "table" then
+      setup = module_.setup
+   end
+
+   return setmetatable({}, meta_table), setup
 end
 
 return submodule
