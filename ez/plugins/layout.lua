@@ -37,4 +37,7 @@ local layouts = {
    nw = a_layouts.corner.nw,
 }
 
-return {setter, layouts}
+return {
+   setter = setter,
+   getter = layouts,
+}

@@ -18,34 +18,36 @@ end
 --
 -- local value = ez.plugin.key
 --
-local table_setter_getter_dispatcher = function (module_)
-   local setter = module_[1]
-   local getter = module_[2]
+local table_dispatcher = function (module_)
+   local setter = module_.setter
+   local getter = module_.getter
 
    -- support table of constants and a getter function
    local type_getters = {}
-   type_getters["table"] = function (table_, key) return table_[key] end
+   type_getters["table"]    = function (_table, key) return getter[key] end
    type_getters["function"] = function (_table, key) return getter(key) end
    local getter_function = type_getters[type(getter)]
 
    return {
-      __newindex = function (_table, key, value)
-	 return setter(key, value)
-      end,
-      __index = getter_function
+      __newindex = function (_table, key, value) return setter(key, value) end,
+      __index = getter_function,
    }
 end
 
 -- support plugins exporting only a setter
 -- and those exporting both setter and getter
+--
+-- setup function (function to be called after the whole setup)
+-- can be set in when the module is exported as a table
+-- under the /setup/ key
 local type_dispatcher = {}
-type_dispatcher["table"] = table_setter_getter_dispatcher
+type_dispatcher["table"]    = table_dispatcher
 type_dispatcher["function"] = function_setter_dispatcher
 
 local submodule = function (module_)
    local dispatcher = type_dispatcher[type(module_)]
    local meta_table = dispatcher(module_)
-   return setmetatable({}, meta_table)
+   return setmetatable({}, meta_table), module_.setup
 end
 
 return submodule

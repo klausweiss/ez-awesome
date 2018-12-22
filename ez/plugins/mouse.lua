@@ -90,4 +90,7 @@ end
 local setter = function (key, value) return setters[key](value) end 
 local getter = function (key) return getters[key] end
 
-return {setter, getter}
+return {
+   setter = setter,
+   getter = getter,
+}

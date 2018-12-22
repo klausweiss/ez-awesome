@@ -6,17 +6,35 @@ local setter = function (key, value)
    io.stderr:write("Tried to write main config key (" .. key .. " := " .. value .. ")\n")
 end
 
+local setup_functions = {}
+
+local getters = {
+   setup = function()
+      for _, setup_function in pairs(setup_functions) do
+	 setup_function()
+      end
+   end,
+}
+
 -- Lazily loads plugin
-local getter = function (key)
-   local module_
+local plugin_getter = function (key)
+   local module_, setup_function
    local status, error_ = pcall(function()
-	 module_ = plugin_loader(key)
+	 module_, setup_function = plugin_loader(key)
    end)
    if status then
+      if setup_function then
+	 table.insert(setup_functions, setup_function)
+      end
       return module_
    else
-      io.stderr:write("Couldn't find plugin: " .. key .. "\n")
+      error("Couldn't load plugin " .. key .. ". Cause:\n" .. error_)
    end
 end
 
-return {setter, getter}
+return {
+   setter = setter,
+   getter = function (key)
+      return getters[key] or plugin_getter(key)
+   end,
+}
