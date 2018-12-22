@@ -48,8 +48,10 @@ local to_buttons_table = function (prefix)
 end
 
 -- default setters:
+--
 --   ez.mouse.desktop_click = show_menu
 --   ...
+--
 local setters = {}
 for button_name, number in pairs(buttons_numbers) do
    for prefix, table_ in pairs(buttons_maps) do
@@ -61,8 +63,10 @@ for button_name, number in pairs(buttons_numbers) do
 end
 
 -- combo setters:
+--
 --   ez.mouse.desktop_click[{alt, ctrl}] = show_menu
 --   ...
+--
 local getters = {}
 for button_name, number in pairs(buttons_numbers) do
    for prefix, table_ in pairs(buttons_maps) do

@@ -1,3 +1,8 @@
+-- support plugins returning a setter function
+-- taking parameters key and value
+-- 
+--   ez.plugin.key = value
+--
 local function_setter_dispatcher = function (setter)
    return {
       __newindex = function (_table, key, value)
@@ -6,6 +11,13 @@ local function_setter_dispatcher = function (setter)
    }
 end
 
+-- support plugins returning a setter function
+-- taking parameters key and value
+-- and a getter table or function
+-- taking parameter key
+--
+-- local value = ez.plugin.key
+--
 local table_setter_getter_dispatcher = function (module_)
    local setter = module_[1]
    local getter = module_[2]
@@ -24,7 +36,8 @@ local table_setter_getter_dispatcher = function (module_)
    }
 end
 
--- support submodules exporting only setter and those exporting both setter and getter
+-- support plugins exporting only a setter
+-- and those exporting both setter and getter
 local type_dispatcher = {}
 type_dispatcher["table"] = table_setter_getter_dispatcher
 type_dispatcher["function"] = function_setter_dispatcher
