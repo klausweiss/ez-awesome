@@ -60,7 +60,11 @@ for button_name, number in pairs(buttons_numbers) do
    end
 end
 
-local getters = {}
+local getters = {
+   -- private api
+   _buttons_numbers = buttons_numbers,
+}
+-- public api
 -- combo setters:
 --
 --   ez.mouse.desktop_click[{alt, ctrl}] = show_menu
