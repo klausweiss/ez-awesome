@@ -45,15 +45,6 @@ local to_buttons_table = function (prefix)
    return buttons_table
 end
 
-local get_client_buttons = function ()
-   return to_buttons_table("client")
-end
-
-local set_desktop_buttons = function ()
-   local buttons_table = to_buttons_table("desktop")
-   root.buttons(buttons_table)
-end
-
 -- default setters:
 --
 --   ez.mouse.desktop_click = show_menu
@@ -69,11 +60,7 @@ for button_name, number in pairs(buttons_numbers) do
    end
 end
 
-local getters = {
-   -- private interface
-   __get_client_buttons = get_client_buttons,
-}
--- public interface
+local getters = {}
 -- combo setters:
 --
 --   ez.mouse.desktop_click[{alt, ctrl}] = show_menu
@@ -88,11 +75,36 @@ for button_name, number in pairs(buttons_numbers) do
    end
 end
 
+
+local set_client_buttons = function ()
+   local buttons_table = to_buttons_table("client")
+   -- add rules
+   local client_rules = {
+      {
+	 rule       = {}, -- for all clients
+	 properties = {
+	    buttons = buttons_table,
+	 },
+      },
+   }
+   stdlib.extendtable(awful.rules.rules, client_rules)
+end
+
+local set_desktop_buttons = function ()
+   local buttons_table = to_buttons_table("desktop")
+   root.buttons(buttons_table)
+end
+
+
 local setter = function (key, value) return setters[key](value) end 
 local getter = function (key) return getters[key] end
+local setup  = function ()
+   set_desktop_buttons()
+   set_client_buttons()
+end
 
 return {
    setter = setter,
    getter = getter,
-   setup  = set_desktop_buttons,
+   setup  = setup,
 }
