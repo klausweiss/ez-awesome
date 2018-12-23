@@ -24,7 +24,7 @@ local plugin_getter = function (key)
    end)
    if status then
       if setup_function then
-	 table.insert(setup_functions, setup_function)
+	 setup_functions[setup_function] = setup_function
       end
       return module_
    else
