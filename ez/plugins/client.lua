@@ -6,6 +6,7 @@ local ez     = require("ez")
 local mouse  = ez.mouse
 
 
+local focus_next = function () awful.client.focus.byidx( 1) end
 local focus_prev = function () awful.client.focus.byidx(-1) end
 
 local functions = {
@@ -22,7 +23,7 @@ local functions = {
       end
    end,
 
-   focus_next     = function () awful.client.focus.byidx(1) end,
+   focus_next     = focus_next,
    focus_prev     = focus_prev,
    focus_previous = focus_prev,
 }
@@ -95,24 +96,38 @@ local handler_request_titlebars = function (client_)
   }
 end
 
-local signals = {}
-signals["manage"]             = handler_manage
-signals["focus"]              = handler_focus
-signals["unfocus"]            = handler_unfocus
-signals["request::titlebars"] = handler_request_titlebars
+local signals = settertable(function (signal, handler)
+      client.connect_signal(signal, handler)
+end)
 
 local setup_focus_follow_mouse = function ()
-    require("awful.autofocus")
-    client.connect_signal("mouse::enter", handler_mouse_enter)
+   require("awful.autofocus")
+   signals["mouse::enter"] = handler_mouse_enter
+end
+
+local add_titlebars_rules = function ()
+   local titlebars_rules = {
+      rule_any = {
+	 type = {"normal", "dialog"}
+      },
+      properties = {
+	 titlebars_enabled = true
+      }
+   }
+   stdlib.extendtable(awful.rules.rules, titlebars_rules)
 end
 
 local setup = function ()
-   for signal, handler in pairs(signals) do
-      client.connect_signal(signal, handler)
-   end
+   signals["manage"]             = handler_manage
+   signals["focus"]              = handler_focus
+   signals["unfocus"]            = handler_unfocus
+   signals["request::titlebars"] = handler_request_titlebars
+
    if clients_config.focus_follow_mouse then
       setup_focus_follow_mouse()
    end
+
+   add_titlebars_rules()
 end
 
 local setter = {
