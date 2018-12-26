@@ -11,6 +11,7 @@ local setup_functions = {}
 local getters = {
    setup = function()
       for _, setup_function in pairs(setup_functions) do
+	 -- TODO: initialize after the /startup/ signal
 	 setup_function()
       end
    end,
