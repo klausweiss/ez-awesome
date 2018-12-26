@@ -35,6 +35,9 @@ local layouts = {
    se = a_layouts.corner.se,
    sw = a_layouts.corner.sw,
    nw = a_layouts.corner.nw,
+
+   _next_layout = function () awful.layout.inc( 1) end,
+   _prev_layout = function () awful.layout.inc(-1) end,
 }
 
 return {

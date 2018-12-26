@@ -1,8 +1,11 @@
 local awful     = require("awful")
 local beautiful = require("beautiful")
+local wibox     = require("wibox")
 
 local stdlib = require("ez.stdlib")
 local ez     = require("ez")
+local client = ez.client
+local layout = ez.layout
 local mouse  = ez.mouse
 local tags   = ez.tags
 
@@ -33,6 +36,43 @@ local widget_factories = {
       return awful.widget.taglist(screen,
 				  awful.widget.taglist.filter.all,
 				  taglist_buttons)
+   end,
+
+   tasklist = function (screen)
+      local select_client_instance = nil
+      local toggle_select_client_menu = function ()
+	 if select_client_instance and select_client_instance.wibox.visible then
+	    select_client_instance:hide()
+	    select_client_instance = nil
+	 else
+	    select_client_instance = awful.menu.clients({ theme = { width = 250 } })
+	 end
+      end
+
+      local tasklist_buttons = stdlib.jointables(
+	 awful.button({}, mouse._buttons_numbers.left_click,  client.toggle_focus_minimize),
+	 awful.button({}, mouse._buttons_numbers.right_click, toggle_select_client_menu),
+	 awful.button({}, mouse._buttons_numbers.wheel_up,    client.focus_next),
+	 awful.button({}, mouse._buttons_numbers.wheel_down,  client.focus_previous))
+      return awful.widget.tasklist(screen,
+				   awful.widget.tasklist.filter.currenttags,
+				   tasklist_buttons)
+   end,
+
+   tray = function (_screen) return wibox.widget.systray() end,
+
+   clock = function (_screen) return wibox.widget.textclock() end,
+
+   layouts = function (screen)
+      local layoutbox_buttons = stdlib.jointables(
+	 awful.button({}, mouse._buttons_numbers.left_click,  layout._next_layout),
+	 awful.button({}, mouse._buttons_numbers.right_click, layout._prev_layout),
+	 awful.button({}, mouse._buttons_numbers.wheel_up,    layout._next_layout),
+	 awful.button({}, mouse._buttons_numbers.wheel_down,  layout._prev_layout)
+      )
+      local layoutbox = awful.widget.layoutbox(screen)
+      layoutbox:buttons(layoutbox_buttons)
+      return layoutbox
    end,
 }
 

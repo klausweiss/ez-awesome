@@ -6,6 +6,28 @@ local ez     = require("ez")
 local mouse  = ez.mouse
 
 
+local focus_prev = function () awful.client.focus.byidx(-1) end
+
+local functions = {
+   toggle_focus_minimize = function (client_)
+      if client_ == client.focus then
+	 client_.minimized = true
+      else
+	 client_.minimized = false
+	 if not client_:isvisible() and client_.first_tag then
+	    client_.first_tag:view_only()
+	 end
+	 client.focus = client_
+	 client_:raise()
+      end
+   end,
+
+   focus_next     = function () awful.client.focus.byidx(1) end,
+   focus_prev     = focus_prev,
+   focus_previous = focus_prev,
+}
+
+
 local clients_config = {
    focus_follow_mouse = true,
 }
@@ -102,6 +124,7 @@ local setter = {
 local setters = function (key, value) return setter[key](value) end
 
 return {
+   getter = functions,
    setter = setters,
    setup  = setup,
 }
