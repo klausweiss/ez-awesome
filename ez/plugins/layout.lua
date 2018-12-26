@@ -40,4 +40,5 @@ local layouts = {
 return {
    setter = setter,
    getter = layouts,
+   -- tags.lua depends on this module not exporting a setup function
 }
