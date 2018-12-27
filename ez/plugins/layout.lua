@@ -45,8 +45,8 @@ local functions = {
    select_main_client = function (client_) c:swap(awful.client.getmaster()) end,
 }
 
-local properties = stdlib.jointables(layouts,
-				     functions)
+local properties = stdlib.joindicts(layouts,
+				    functions)
 
 return {
    setter = setter,

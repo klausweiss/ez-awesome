@@ -11,6 +11,16 @@ return {
       end
       return newtable
    end,
+   joindicts = function (...)
+      args = { ... }
+      local newdict = {}
+      for _, t in pairs(args) do
+	 for k, v in pairs(t) do
+	    newdict[k] = v
+	 end
+      end
+      return newdict
+   end,
    noop = function (...) end,
    settertable = function (setter) return setmetatable({}, {
 	    __newindex = function (t, k, v) setter(k, v) end
