@@ -27,8 +27,17 @@ local set_global_keys = function ()
    root.keys(global_keys_table)
 end
 
-local get_client_keys = function ()
-   return client_keys_table
+local set_client_keys = function ()
+   -- add rules
+   local client_rules = {
+      {
+	 rule       = {}, -- for all clients
+	 properties = {
+	    keys = client_keys_table,
+	 },
+      },
+   }
+   stdlib.extendtable(awful.rules.rules, client_rules)
 end
 
 local getters = {
@@ -41,8 +50,12 @@ local getters = {
 }
 
 local getter = function (key) return getters[key] end
+local setup = function ()
+   set_global_keys()
+   set_client_keys()
+end
 
 return {
    getter = getter,
-   setup  = set_global_keys,
+   setup  = setup,
 }
