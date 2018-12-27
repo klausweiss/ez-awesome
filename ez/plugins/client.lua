@@ -123,18 +123,19 @@ local setup_focus_follow_mouse = function ()
    signals["mouse::enter"] = handler_mouse_enter
 end
 
-local add_titlebars_rules = function ()
-   local titlebars_rules = {
+local add_client_rules = function ()
+   local client_rules = {
       {
 	 rule_any = {
 	    type = {"normal", "dialog"},
 	 },
 	 properties = {
+	    focus = awful.client.focus.filter,
 	    titlebars_enabled = true,
 	 },
       }
    }
-   stdlib.extendtable(awful.rules.rules, titlebars_rules)
+   stdlib.extendtable(awful.rules.rules, client_rules)
 end
 
 local setup = function ()
@@ -147,7 +148,7 @@ local setup = function ()
       setup_focus_follow_mouse()
    end
 
-   add_titlebars_rules()
+   add_client_rules()
 end
 
 local setter = {
