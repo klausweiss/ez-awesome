@@ -23,9 +23,27 @@ local functions = {
       end
    end,
 
+   toggle_fullscreen = function (client_)
+      client_.fullscreen = not client_.fullscreen
+      client_:raise()
+   end,
+
+   toggle_maximize = function (client_)
+      client_.maximized = not client_.maximized
+      client_:raise()
+   end,
+
+   close = function (client_)
+      client_:kill()
+   end,
+
+   focus          = function (client_) client.focus = client_; client_:raise() end, 
    focus_next     = focus_next,
    focus_prev     = focus_prev,
    focus_previous = focus_prev,
+
+   move   = awful.mouse.client.move,
+   resize = awful.mouse.client.resize,
 }
 
 
@@ -96,7 +114,7 @@ local handler_request_titlebars = function (client_)
   }
 end
 
-local signals = settertable(function (signal, handler)
+local signals = stdlib.settertable(function (signal, handler)
       client.connect_signal(signal, handler)
 end)
 
@@ -107,11 +125,13 @@ end
 
 local add_titlebars_rules = function ()
    local titlebars_rules = {
-      rule_any = {
-	 type = {"normal", "dialog"}
-      },
-      properties = {
-	 titlebars_enabled = true
+      {
+	 rule_any = {
+	    type = {"normal", "dialog"},
+	 },
+	 properties = {
+	    titlebars_enabled = true,
+	 },
       }
    }
    stdlib.extendtable(awful.rules.rules, titlebars_rules)
