@@ -18,7 +18,7 @@ local setters = {
 }
 
 local setup_tags = function (screen)
-   -- awful.layout.layouts should be configured now
+   -- awful.layout.layouts should have been configured by now
    awful.tag(config_tags.tags, screen, awful.layout.layouts[1])
 end
 

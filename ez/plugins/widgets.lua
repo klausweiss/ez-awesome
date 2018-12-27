@@ -65,10 +65,10 @@ local widget_factories = {
 
    layouts = function (screen)
       local layoutbox_buttons = stdlib.jointables(
-	 awful.button({}, mouse._buttons_numbers.left_click,  layout._next_layout),
-	 awful.button({}, mouse._buttons_numbers.right_click, layout._prev_layout),
-	 awful.button({}, mouse._buttons_numbers.wheel_up,    layout._next_layout),
-	 awful.button({}, mouse._buttons_numbers.wheel_down,  layout._prev_layout)
+	 awful.button({}, mouse._buttons_numbers.left_click,  layout.next_layout),
+	 awful.button({}, mouse._buttons_numbers.right_click, layout.prev_layout),
+	 awful.button({}, mouse._buttons_numbers.wheel_up,    layout.next_layout),
+	 awful.button({}, mouse._buttons_numbers.wheel_down,  layout.prev_layout)
       )
       local layoutbox = awful.widget.layoutbox(screen)
       layoutbox:buttons(layoutbox_buttons)

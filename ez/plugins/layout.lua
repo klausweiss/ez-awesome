@@ -1,6 +1,8 @@
 local awful = require("awful")
 local a_layouts = awful.layout.suit
 
+local stdlib = require("ez.stdlib")
+
 
 local setters = {
    layouts = function (value)
@@ -35,13 +37,19 @@ local layouts = {
    se = a_layouts.corner.se,
    sw = a_layouts.corner.sw,
    nw = a_layouts.corner.nw,
-
-   _next_layout = function () awful.layout.inc( 1) end,
-   _prev_layout = function () awful.layout.inc(-1) end,
 }
+
+local functions = {
+   next_layout        = function () awful.layout.inc( 1) end,
+   prev_layout        = function () awful.layout.inc(-1) end,
+   select_main_client = function (client_) c:swap(awful.client.getmaster()) end,
+}
+
+local properties = stdlib.jointables(layouts,
+				     functions)
 
 return {
    setter = setter,
-   getter = layouts,
+   getter = properties,
    -- tags.lua depends on this module not exporting a setup function
 }
