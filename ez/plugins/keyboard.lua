@@ -47,6 +47,14 @@ local getters = {
    -- public interface
    global = new_keys_setter(global_keys_table),
    client = new_keys_setter(client_keys_table),
+
+   ctrl    = "Control",
+   alt     = "Mod1",
+   super   = "Mod4",
+   shift   = "Shift",
+   tab     = "Tab",
+   return_ = "Return",
+   enter   = "Return",
 }
 
 local getter = function (key) return getters[key] end
