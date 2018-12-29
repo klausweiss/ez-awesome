@@ -8,5 +8,8 @@ return {
 	    awful.spawn(program)
 	 end
       end
+   },
+   export = {
+      "run",
    }
 }
