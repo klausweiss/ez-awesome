@@ -2,9 +2,14 @@ local awful = require("awful")
 local wibox = require("wibox")
 
 
+local positions = {
+   bottom = "bottom",
+   top    = "top",
+}
+
 local wibar_config = {
    layout   = wibox.layout.align.horizontal,
-   position = "bottom",
+   position = positions.bottom,
    left     = {},
    middle   = {},
    right    = {},
@@ -35,6 +40,11 @@ local setup = function () awful.screen.connect_for_each_screen(setup_wibar) end
 local setter = function (key, value) wibar_config[key] = value end
 
 return {
+   getter = positions,
    setter = setter,
    setup  = setup,
+   export = {
+      "bottom",
+      "top",
+   }
 }
