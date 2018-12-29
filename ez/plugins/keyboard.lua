@@ -93,4 +93,13 @@ end
 return {
    getter = getter,
    setup  = setup,
+   export = {
+      "ctrl",
+      "alt",
+      "super",
+      "shift",
+      "tab",
+      "return_",
+      "enter",
+   }
 }
