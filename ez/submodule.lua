@@ -24,13 +24,25 @@ local table_dispatcher = function (module_)
    }
 end
 
+local set_global_variables = function (exported_variables, submodule_)
+   for _, variable in pairs(exported_variables) do
+      _G[variable] = submodule_[variable]
+   end
+end
+
+
 -- setup function (function to be called after the whole setup)
 -- can be set under the /setup/ key in the exported table
 local submodule = function (module_)
    local meta_table = table_dispatcher(module_)
    local setup = module_.setup
+   local submodule_ = setmetatable({}, meta_table)
 
-   return setmetatable({}, meta_table), setup
+   if module_.export then
+      set_global_variables(module_.export, submodule_)
+   end
+
+   return submodule_, setup
 end
 
 return submodule
