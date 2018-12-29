@@ -11,7 +11,7 @@ local tags   = ez.tags
 
 
 local widget_factories = {
-   launcher = function (_screen)
+   launcher_menu = function (_screen)
       local awesome_menu = {
 	 { "restart", awesome.restart },
 	 { "quit",    function () awesome.quit() end },
@@ -28,10 +28,10 @@ local widget_factories = {
 
    taglist = function (screen)
       local taglist_buttons = stdlib.jointables(
-	 awful.button({}, mouse._buttons_numbers.left_click,  tags.show_only),
-	 awful.button({}, mouse._buttons_numbers.right_click, tags.toggle),
-	 awful.button({}, mouse._buttons_numbers.wheel_up,    tags.show_next),
-	 awful.button({}, mouse._buttons_numbers.wheel_down,  tags.show_previous)
+	 awful.button({}, mouse._buttons_numbers.left_click,  tags.show_only_tag),
+	 awful.button({}, mouse._buttons_numbers.right_click, tags.toggle_tag),
+	 awful.button({}, mouse._buttons_numbers.wheel_up,    tags.show_next_tag),
+	 awful.button({}, mouse._buttons_numbers.wheel_down,  tags.show_previous_tag)
       )
       return awful.widget.taglist(screen,
 				  awful.widget.taglist.filter.all,
@@ -50,7 +50,7 @@ local widget_factories = {
       end
 
       local tasklist_buttons = stdlib.jointables(
-	 awful.button({}, mouse._buttons_numbers.left_click,  client.toggle_focus_minimize),
+	 awful.button({}, mouse._buttons_numbers.left_click,  client.toggle_focus_minimize_client),
 	 awful.button({}, mouse._buttons_numbers.right_click, toggle_select_client_menu),
 	 awful.button({}, mouse._buttons_numbers.wheel_up,    client.focus_next),
 	 awful.button({}, mouse._buttons_numbers.wheel_down,  client.focus_previous))
@@ -63,7 +63,7 @@ local widget_factories = {
 
    clock = function (_screen) return wibox.widget.textclock() end,
 
-   layouts = function (screen)
+   layouts_switcher = function (screen)
       local layoutbox_buttons = stdlib.jointables(
 	 awful.button({}, mouse._buttons_numbers.left_click,  layout.next_layout),
 	 awful.button({}, mouse._buttons_numbers.right_click, layout.prev_layout),
@@ -81,4 +81,12 @@ local getter = function (key) return widget_factories[key] end
 
 return {
    getter = getter,
+   export = {
+      "launcher_menu",
+      "taglist",
+      "tasklist",
+      "tray",
+      "clock",
+      "layouts_switcher",
+   }
 }
