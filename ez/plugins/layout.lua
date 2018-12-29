@@ -44,6 +44,7 @@ local functions = {
    prev_layout        = function () awful.layout.inc(-1) end,
    select_main_client = function (client_) client_:swap(awful.client.getmaster()) end,
 }
+functions.previous_layout = functions.prev_layout
 
 local properties = stdlib.joindicts(layouts,
 				    functions)
@@ -52,4 +53,35 @@ return {
    setter = setter,
    getter = properties,
    -- tags.lua depends on this module not exporting a setup function
+   export = {
+      "tile",
+      "tile_right",
+      "tile_left",
+      "tile_up",
+      "tile_bottom",
+
+      "fair",
+      "fair_vertical",
+      "fair_horizontal",
+
+      "spiral",
+      "spiral_dwindle",
+
+      "magnifier",
+
+      "floating",
+
+      "max",
+      "fullscreen",
+
+      "ne",
+      "se",
+      "sw",
+      "nw",
+
+      "next_layout",
+      "prev_layout",
+      "previous_layout",
+      "select_main_client",
+   }
 }
