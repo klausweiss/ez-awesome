@@ -42,7 +42,7 @@ local layouts = {
 local functions = {
    next_layout        = function () awful.layout.inc( 1) end,
    prev_layout        = function () awful.layout.inc(-1) end,
-   select_main_client = function (client_) c:swap(awful.client.getmaster()) end,
+   select_main_client = function (client_) client_:swap(awful.client.getmaster()) end,
 }
 
 local properties = stdlib.joindicts(layouts,

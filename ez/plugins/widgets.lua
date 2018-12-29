@@ -14,7 +14,7 @@ local widget_factories = {
    launcher = function (_screen)
       local awesome_menu = {
 	 { "restart", awesome.restart },
-	 { "quit",    awesome.quit },
+	 { "quit",    function () awesome.quit() end },
       }
       local menu = awful.menu({
 	    items = awesome_menu,
