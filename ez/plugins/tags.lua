@@ -26,12 +26,12 @@ local by_index = function (f)
 end
 
 local functions = {
-   show_only       = function (tag) tag:view_only() end,
-   show_by_index   = by_index(function (tag) tag:view_only() end),
-   show_next       = with_current_tag(function (tag) awful.tag.viewnext(tag.screen) end),
-   show_prev       = with_current_tag(function (tag) awful.tag.viewprev(tag.screen) end),
-   toggle          = awful.tag.viewtoggle,
-   toggle_by_index = by_index(awful.tag.viewtoggle),
+   show_only_tag       = function (tag) tag:view_only() end,
+   show_tag_by_index   = by_index(function (tag) tag:view_only() end),
+   show_next_tag       = with_current_tag(function (tag) awful.tag.viewnext(tag.screen) end),
+   show_prev_tag       = with_current_tag(function (tag) awful.tag.viewprev(tag.screen) end),
+   toggle_tag          = awful.tag.viewtoggle,
+   toggle_tag_by_index = by_index(awful.tag.viewtoggle),
 
    move_focused_client_to_tag   = by_index(function (tag)
 	 if client.focus then client.focus:move_to_tag(tag) end
@@ -40,7 +40,7 @@ local functions = {
 	 if client.focus then client.focus:toggle_tag(tag) end
    end),
 }
-functions.show_previous = functions.show_prev
+functions.show_previous_tag = functions.show_prev_tag
 
 local setters = {
    tags = function (value) config_tags.tags = value end
@@ -62,4 +62,14 @@ return {
    getter = getter,
    setter = setter,
    setup  = setup,
+   export = {
+      "show_only_tag",
+      "show_tag_by_index",
+      "show_next_tag",
+      "show_prev_tag",
+      "toggle_tag",
+      "toggle_tag_by_index",
+      "move_focused_client_to_tag",
+      "toggle_tag_on_focused_client",
+   }
 }
