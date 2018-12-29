@@ -10,7 +10,7 @@ local focus_next = function () awful.client.focus.byidx( 1) end
 local focus_prev = function () awful.client.focus.byidx(-1) end
 
 local functions = {
-   toggle_focus_minimize = function (client_)
+   toggle_focus_minimize_client = function (client_)
       if client_ == client.focus then
 	 client_.minimized = true
       else
@@ -23,27 +23,27 @@ local functions = {
       end
    end,
 
-   toggle_fullscreen = function (client_)
+   toggle_fullscreen_client = function (client_)
       client_.fullscreen = not client_.fullscreen
       client_:raise()
    end,
 
-   toggle_maximize = function (client_)
+   toggle_maximize_client = function (client_)
       client_.maximized = not client_.maximized
       client_:raise()
    end,
 
-   close = function (client_)
+   close_client = function (client_)
       client_:kill()
    end,
 
-   focus          = function (client_) client.focus = client_; client_:raise() end, 
-   focus_next     = focus_next,
-   focus_prev     = focus_prev,
-   focus_previous = focus_prev,
+   focus_client          = function (client_) client.focus = client_; client_:raise() end, 
+   focus_next_client     = focus_next,
+   focus_prev_client     = focus_prev,
+   focus_previous_client = focus_prev,
 
-   move   = awful.mouse.client.move,
-   resize = awful.mouse.client.resize,
+   move_client   = awful.mouse.client.move,
+   resize_client = awful.mouse.client.resize,
 }
 
 
@@ -163,4 +163,18 @@ return {
    getter = functions,
    setter = setters,
    setup  = setup,
+   export = {
+      "focus_next_client",
+      "focus_prev_client",
+      "focus_previous_client",
+
+      "focus_client",
+      "move_client",
+      "resize_client",
+
+      "close_client",
+      "toggle_focus_minimize_client",
+      "toggle_fullscreen_client",
+      "toggle_maximize_client",
+   }
 }
