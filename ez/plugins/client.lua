@@ -132,6 +132,7 @@ local add_client_rules = function ()
 	 properties = {
 	    focus = awful.client.focus.filter,
 	    titlebars_enabled = true,
+	    screen = awful.screen.preferred,
 	 },
       }
    }
