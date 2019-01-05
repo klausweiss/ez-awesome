@@ -52,8 +52,8 @@ local widget_factories = {
       local tasklist_buttons = stdlib.jointables(
 	 awful.button({}, mouse._buttons_numbers.left_click,  client.toggle_focus_minimize_client),
 	 awful.button({}, mouse._buttons_numbers.right_click, toggle_select_client_menu),
-	 awful.button({}, mouse._buttons_numbers.wheel_up,    client.focus_next),
-	 awful.button({}, mouse._buttons_numbers.wheel_down,  client.focus_previous))
+	 awful.button({}, mouse._buttons_numbers.wheel_up,    client.focus_next_client),
+	 awful.button({}, mouse._buttons_numbers.wheel_down,  client.focus_previous_client))
       return awful.widget.tasklist(screen,
 				   awful.widget.tasklist.filter.currenttags,
 				   tasklist_buttons)
