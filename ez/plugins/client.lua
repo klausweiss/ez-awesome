@@ -44,6 +44,14 @@ local functions = {
 
    move_client   = awful.mouse.client.move,
    resize_client = awful.mouse.client.resize,
+
+   restore_random_client = awful.client.restore,
+   restore_and_focus_random_client = function ()
+      local client_ = awful.client.restore()
+      if client_ then
+	 client.focus = client_
+      end
+   end,
 }
 
 
@@ -177,5 +185,8 @@ return {
       "toggle_focus_minimize_client",
       "toggle_fullscreen_client",
       "toggle_maximize_client",
+
+      "restore_random_client",
+      "restore_and_focus_random_client",
    }
 }
