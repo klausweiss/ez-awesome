@@ -6,16 +6,25 @@ local setter = function (key, value)
    io.stderr:write("Tried to write main config key (" .. key .. " := " .. value .. ")\n")
 end
 
+-- Setup functions need to be called in order (ez.theme needs to be loaded first)
 local setup_functions = {}
+local functions_in_order = {}
 
 local getters = {
    setup = function()
-      for _, setup_function in pairs(setup_functions) do
+      for _, setup_function in ipairs(functions_in_order) do
 	 -- TODO: initialize after the /startup/ signal
 	 setup_function()
       end
    end,
 }
+
+local add_setup_function = function (setup_function)
+   if not setup_functions[setup_function] then
+      setup_functions[setup_function] = setup_function
+      table.insert(functions_in_order, setup_function)
+   end
+end
 
 -- Lazily loads plugin
 local plugin_getter = function (key)
@@ -25,7 +34,7 @@ local plugin_getter = function (key)
    end)
    if status then
       if setup_function then
-	 setup_functions[setup_function] = setup_function
+	 add_setup_function(setup_function)
       end
       return module_
    else
