@@ -89,6 +89,7 @@ Setter | Parameters | Value | Description
 `ez.mouse.desktop_BUTTON[keys_combo]` | `BUTTON` can be `wheel_up`, `wheel_down`, `wheel_click`, `click`, `left_click` or `right_click`. `keys_combo` should be a table with _modifiers_ | `fun () -> ()` | `fun` will be called after the button has been clicked on the desktop while pressing `keys_combo` modifiers.
 `ez.mouse.client_BUTTON[keys_combo]` | `BUTTON` can be `wheel_up`, `wheel_down`, `wheel_click`, `click`, `left_click` or `right_click`. `keys_combo` should be a table with _modifiers_ | `fun (client) -> ()` | `fun` will be called after the button has been clicked on the client while pressing `keys_combo` modifiers.
 `ez.tags.tags` | | `table[string]` | Strings in `table` will be names of tags.
+`ez.theme.wallpaper` | | `string` | Sets wallpaper for each screen to an image under given path.
 `ez.wibar.position` | | `position` | Position, where `wibar` will be placed.
 `ez.wibar.left` | | `table[widget_factory]` | Widgets on the left part of `wibar`. `widget_factory` is a function taking `screen`, returning a widget.
 `ez.wibar.middle` | | `table[widget_factory]` | Widgets on the middle part of `wibar`. `widget_factory` is a function taking `screen`, returning a widget.
@@ -107,6 +108,8 @@ Function | Signature | Description
 `focus_previous_client` or `focus_prev_client` | `() -> ()` | Focuses client right before the focused one.
 `move_client`                                  | `(client) -> ()` | Starts moving client.
 `resize_client`                                | `(client) -> ()` | Starts resizing client.
+`restore_random_client`                        | `(client) -> ()` | Unminimizes random client.
+`restore_and_focus_random_client`              | `(client) -> ()` | Unminimizes and focuses random client.
 `run` | `(command) -> () -> ()` | Creates a function running `command` when called.
 `focus_left_screen`          | `() -> ()` | Focuses screen to the left of currently selected screen.
 `focus_right_screen`         | `() -> ()` | Focuses screen to the right of currently selected screen.
