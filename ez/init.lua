@@ -17,6 +17,7 @@ local load_default_plugins = function(ez_)
    _ = ez_.tags
    _ = ez_.wibar
    _ = ez_.widgets
+   _ = ez_.theme
 end
 
 local ez = submodule(config_module)
