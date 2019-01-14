@@ -1,4 +1,10 @@
 return {
+   expandhome = function (path)
+      if path:sub(1, 1) == "~" then
+	 return os.getenv("HOME") .. path:sub(2)
+      end
+      return path
+      end,
    extendtable = function (t1, t2) for _, v in pairs(t2) do table.insert(t1, v) end
    end,
    jointables = function (...)
