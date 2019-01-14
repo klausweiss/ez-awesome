@@ -1,6 +1,13 @@
 -- add /ez/ subdirectory to the library load path
 local this_name, this_path = ...
 
+if not __set_default_theme then
+   require("beautiful").init({})
+
+   __set_default_theme = true
+end
+
+
 if not __ez_modified_path then
     local dir_path = this_path:match(".*/")
     package.path = (";"

@@ -7,6 +7,9 @@ local load_default_plugins = function(ez_)
    __ez_started_loading_plugins = true
 
    local _
+   -- Needs to be loaded first
+   _ = ez_.theme
+
    _ = ez_.client
    _ = ez_.errors_handler
    _ = ez_.keyboard
@@ -17,7 +20,6 @@ local load_default_plugins = function(ez_)
    _ = ez_.tags
    _ = ez_.wibar
    _ = ez_.widgets
-   _ = ez_.theme
 end
 
 local ez = submodule(config_module)
