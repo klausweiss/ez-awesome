@@ -89,6 +89,8 @@ Setter | Parameters | Value | Description
 `ez.mouse.desktop_BUTTON[keys_combo]` | `BUTTON` can be `wheel_up`, `wheel_down`, `wheel_click`, `click`, `left_click` or `right_click`. `keys_combo` should be a table with _modifiers_ | `fun () -> ()` | `fun` will be called after the button has been clicked on the desktop while pressing `keys_combo` modifiers.
 `ez.mouse.client_BUTTON[keys_combo]` | `BUTTON` can be `wheel_up`, `wheel_down`, `wheel_click`, `click`, `left_click` or `right_click`. `keys_combo` should be a table with _modifiers_ | `fun (client) -> ()` | `fun` will be called after the button has been clicked on the client while pressing `keys_combo` modifiers.
 `ez.tags.tags` | | `table[string]` | Strings in `table` will be names of tags.
+`ez.theme.gaps` | | `int` | Sets gaps between clients. Ignores size hints given by windows as a side effect.
+`ez.theme.theme` | | `string` | Sets theme (accepts path to it's `.lua` file).
 `ez.theme.wallpaper` | | `string` | Sets wallpaper for each screen to an image under given path.
 `ez.wibar.position` | | `position` | Position, where `wibar` will be placed.
 `ez.wibar.left` | | `table[widget_factory]` | Widgets on the left part of `wibar`. `widget_factory` is a function taking `screen`, returning a widget.
