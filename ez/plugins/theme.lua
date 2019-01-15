@@ -33,7 +33,7 @@ end
 local init_wallpaper = function ()
    if config.wallpaper then
       awful.screen.connect_for_each_screen(function (s)
-	    gears.wallpaper.fit(config.wallpaper, s)
+	    gears.wallpaper.maximized(config.wallpaper, s)
       end)
    end
 end
