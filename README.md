@@ -130,8 +130,8 @@ Variable | Type | Description
 `alt`                | modifier | Alt key.
 `super`              | modifier | Super key.
 `shift`              | modifier | Shift key.
-`tab`                | modifier | Tab key.
-`return_` or `enter` | modifier | Enter key.
+`tab`                | non-modifier key | Tab key.
+`return_` or `enter` | non-modifier key | Enter key.
 `tile`               | layout | `awful.layout.suit.tile`
 `tile_right`         | layout | `awful.layout.suit.tile_right`
 `tile_left`          | layout | `awful.layout.suit.tile_left`
