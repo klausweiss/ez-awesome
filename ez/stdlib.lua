@@ -1,4 +1,16 @@
 return {
+   defaulttable = function (default)
+      return setmetatable({}, {
+	    __index = function (t, k)
+	       v = rawget(t, k)
+	       if not v then
+		  v = default(k)
+		  t[k] = v
+	       end
+	       return v
+	    end,
+      })
+   end,
    expandhome = function (path)
       if path:sub(1, 1) == "~" then
 	 return os.getenv("HOME") .. path:sub(2)
@@ -32,4 +44,5 @@ return {
 	    __newindex = function (t, k, v) setter(k, v) end
    }) end,
    slice = function (t, a, b) newt = {} for i=a,b do table.insert(newt, t[i]) end return newt end,
+   tablefactory = function () return {} end,
 }
