@@ -15,14 +15,12 @@ git clone https://github.com/klausweiss/ez ~/.config/awesome/ez --depth 1
 
 Separate `ez` plugins are responsible for each group of configuration tasks, e.g. `ez.keyboard` handles setting keyboard shortcuts, `ez.wibar` can be used to set wibar widgets. They also export some functions and variables to be used in the configuration.
 
-To configure the window manager, import the `ez` module and after the configuration is done, call it's `setup` function:
+To configure the window manager, import the `ez` module and set the relevant configuration.
 
 ```lua
 local ez = require('ez')
 
 ...
-
-ez.setup()
 ```
 
 ## Example
@@ -67,8 +65,6 @@ ez.wibar.right = {
    clock,
    layouts_switcher,
 }
-
-ez.setup()
 ```
 
 ## Documentation

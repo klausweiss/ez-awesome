@@ -1,11 +1,8 @@
-local submodule = require("ez.submodule")
+local submodule     = require("ez.submodule")
 local config_module = require("ez.config_module")
 
-local load_default_plugins = function(ez_)
-   -- prevent recursively calling this function
-   if __ez_started_loading_plugins then return end
-   __ez_started_loading_plugins = true
 
+local load_default_plugins = function(ez_)
    local _
    -- Needs to be loaded first
    _ = ez_.theme
@@ -22,7 +19,16 @@ local load_default_plugins = function(ez_)
    _ = ez_.widgets
 end
 
+local init_ez = function (ez_)
+   -- prevent recursively calling this function while importing module
+   if __ez_initiated then return end
+   __ez_initiated = true
+
+   load_default_plugins(ez_)
+   awesome.connect_signal("startup", ez_.setup)
+end
+
 local ez = submodule(config_module)
-load_default_plugins(ez)
+init_ez(ez)
 
 return ez

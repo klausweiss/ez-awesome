@@ -1,3 +1,4 @@
+local awful         = require("awful")
 local plugin_loader = require("ez.plugins._loader")
 
 
@@ -10,12 +11,18 @@ end
 local setup_functions = {}
 local functions_in_order = {}
 
+local reapply_client_rules = function ()
+   for _, client_ in ipairs(client.get()) do
+      awful.rules.apply(client_)
+   end
+end
+
 local getters = {
    setup = function()
       for _, setup_function in ipairs(functions_in_order) do
-	 -- TODO: initialize after the /startup/ signal
 	 setup_function()
       end
+      reapply_client_rules()
    end,
 }
 
