@@ -49,13 +49,13 @@ local path_config_setter = function(property_name)
    end
 end
 
-local setter = {
+local setters = {
    gaps      = config_setter("gaps"),
    theme     = path_config_setter("theme"),
    wallpaper = path_config_setter("wallpaper"),
 }
 
-local setters = function (key, value) return setter[key](value) end
+local setter = function (key, value) return setters[key](value) end
 
 local setup = function ()
    init_theme()
@@ -66,5 +66,6 @@ end
 
 return {
    setup  = setup,
-   setter = setters,
+   setter = setter,
+   default_setter = setters.theme,
 }
