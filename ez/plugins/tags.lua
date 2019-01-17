@@ -61,6 +61,7 @@ end
 return {
    getter = getter,
    setter = setter,
+   default_setter = setters.tags,
    setup  = setup,
    export = {
       "show_only_tag",
