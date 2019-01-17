@@ -30,13 +30,13 @@ Example configuration:
 ```lua
 local ez = require("ez")
 
-ez.layout.layouts = {
+ez.layouts = {
    tile,
    max,
    floating,
 }
 
-ez.tags.tags = {"1", "2", "3", "4", "5", "6", "7"}
+ez.tags = {"1", "2", "3", "4", "5", "6", "7"}
 
 ez.mouse.client_click[{alt}]       = move_client
 ez.mouse.client_right_click[{alt}] = resize_client
@@ -79,15 +79,15 @@ Setter | Parameters | Value | Description
 `ez.keyboard.global[keys_combo]` | `keys_combo` should be a table with _modifiers_ as the first elements and non-_modifier_ as the last one. |`fun () -> ()` | `fun` will be called after the `keys_combo` was pressed.
 `ez.keyboard.client[keys_combo]` | `keys_combo` should be a table with _modifiers_ as the first elements and non-_modifier_ as the last one. |`fun (client) -> ()` | `fun` will be called with the target client as a parameter after the `keys_combo` was pressed.
 `ez.keyboard.tags[keys_combo]` | `keys_combo` should be a table with _modifiers_ only. function `fun` should take a tag number as a parameter and return a new function taking no parameters. |`fun (index) -> () -> ()` | For each tag number (1-9) a keyboard shortcut is generated. Press `keys_combo` + tag number (1-9) to trigger it.
-`ez.layout.layouts` | | `table[layout]` | Layouts in the table will be used for each tag.
+`ez.layouts` | | `table[layout]` | Layouts in the table will be used for each tag.
 `ez.mouse.desktop_BUTTON` | `BUTTON` can be `wheel_up`, `wheel_down`, `wheel_click`, `click`, `left_click` or `right_click` | `fun () -> ()` | `fun` will be called after the button has been clicked on the desktop.
 `ez.mouse.client_BUTTON` | `BUTTON` can be `wheel_up`, `wheel_down`, `wheel_click`, `click`, `left_click` or `right_click` | `fun (client) -> ()` | `fun` will be called after the button has been clicked on the client.
 `ez.mouse.desktop_BUTTON[keys_combo]` | `BUTTON` can be `wheel_up`, `wheel_down`, `wheel_click`, `click`, `left_click` or `right_click`. `keys_combo` should be a table with _modifiers_ | `fun () -> ()` | `fun` will be called after the button has been clicked on the desktop while pressing `keys_combo` modifiers.
 `ez.mouse.client_BUTTON[keys_combo]` | `BUTTON` can be `wheel_up`, `wheel_down`, `wheel_click`, `click`, `left_click` or `right_click`. `keys_combo` should be a table with _modifiers_ | `fun (client) -> ()` | `fun` will be called after the button has been clicked on the client while pressing `keys_combo` modifiers.
 `ez.rules[WINDOW_CLASS].PROPERTY` | `WINDOW_CLASS` is an X11 class that should match, `PROPERTY` is property to be set (as in `awful.rules`) | `any` | Adds a rule for a window of the given class to set the property to the given value.
-`ez.tags.tags` | | `table[string]` | Strings in `table` will be names of tags.
+`ez.tags` | | `table[string]` | Strings in `table` will be names of tags.
+`ez.theme` | | `string` | Sets theme (accepts path to it's `.lua` file).
 `ez.theme.gaps` | | `int` | Sets gaps between clients. Ignores size hints given by windows as a side effect.
-`ez.theme.theme` | | `string` | Sets theme (accepts path to it's `.lua` file).
 `ez.theme.wallpaper` | | `string` | Sets wallpaper for each screen to an image under given path.
 `ez.wibar.position` | | `position` | Position, where `wibar` will be placed.
 `ez.wibar.left` | | `table[widget_factory]` | Widgets on the left part of `wibar`. `widget_factory` is a function taking `screen`, returning a widget.
