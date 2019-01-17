@@ -2,12 +2,12 @@ local awful     = require("awful")
 local beautiful = require("beautiful")
 local wibox     = require("wibox")
 
-local stdlib = require("ez.stdlib")
-local ez     = require("ez")
-local client = ez.client
-local layout = ez.layout
-local mouse  = ez.mouse
-local tags   = ez.tags
+local stdlib  = require("ez.stdlib")
+local ez      = require("ez")
+local client  = ez.client
+local layouts = ez.layouts
+local mouse   = ez.mouse
+local tags    = ez.tags
 
 
 local widget_factories = {
@@ -65,10 +65,10 @@ local widget_factories = {
 
    layouts_switcher = function (screen)
       local layoutbox_buttons = stdlib.jointables(
-	 awful.button({}, mouse._buttons_numbers.left_click,  layout.next_layout),
-	 awful.button({}, mouse._buttons_numbers.right_click, layout.prev_layout),
-	 awful.button({}, mouse._buttons_numbers.wheel_up,    layout.next_layout),
-	 awful.button({}, mouse._buttons_numbers.wheel_down,  layout.prev_layout)
+	 awful.button({}, mouse._buttons_numbers.left_click,  layouts.next_layout),
+	 awful.button({}, mouse._buttons_numbers.right_click, layouts.prev_layout),
+	 awful.button({}, mouse._buttons_numbers.wheel_up,    layouts.next_layout),
+	 awful.button({}, mouse._buttons_numbers.wheel_down,  layouts.prev_layout)
       )
       local layoutbox = awful.widget.layoutbox(screen)
       layoutbox:buttons(layoutbox_buttons)
