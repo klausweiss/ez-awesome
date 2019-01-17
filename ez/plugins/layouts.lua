@@ -51,6 +51,7 @@ local properties = stdlib.joindicts(layouts,
 
 return {
    setter = setter,
+   default_setter = setters.layouts,
    getter = properties,
    -- tags.lua depends on this module not exporting a setup function
    export = {
