@@ -2,14 +2,10 @@ local awful         = require("awful")
 local plugin_loader = require("ez.plugins._loader")
 
 
--- Setting configuration is the plugins' responsibility
-local setter = function (key, value)
-   io.stderr:write("Tried to write main config key (" .. key .. " := " .. value .. ")\n")
-end
-
 -- Setup functions need to be called in order (ez.theme needs to be loaded first)
-local setup_functions = {}
-local functions_in_order = {}
+local ordered_setup_functions = {}
+local cached_plugins = {}
+
 
 local reapply_client_rules = function ()
    for _, client_ in ipairs(client.get()) do
@@ -19,7 +15,7 @@ end
 
 local getters = {
    setup = function()
-      for _, setup_function in ipairs(functions_in_order) do
+      for _, setup_function in ipairs(ordered_setup_functions) do
 	 setup_function()
       end
       reapply_client_rules()
@@ -27,31 +23,43 @@ local getters = {
 }
 
 local add_setup_function = function (setup_function)
-   if not setup_functions[setup_function] then
-      setup_functions[setup_function] = setup_function
-      table.insert(functions_in_order, setup_function)
-   end
+   -- Loaded plugins are cached, so each setup functions is added exactly once
+   table.insert(ordered_setup_functions, setup_function)
 end
 
 -- Lazily loads plugin
 local plugin_getter = function (key)
-   local module_, setup_function
+   if cached_plugins[key] then return cached_plugins[key] end
+
+   local submodule_, submodule_metadata
    local status, error_ = pcall(function()
-	 module_, setup_function = plugin_loader(key)
+	 submodule_, submodule_metadata = plugin_loader(key)
    end)
    if status then
-      if setup_function then
-	 add_setup_function(setup_function)
+      if submodule_metadata.setup then
+	 add_setup_function(submodule_metadata.setup)
       end
-      return module_
+      local plugin = {
+	 submodule = submodule_,
+	 default_setter = submodule_metadata.default_setter,
+      }
+      cached_plugins[key] = plugin
+      return plugin
    else
       error("Couldn't load plugin " .. key .. ". Cause:\n" .. error_)
    end
 end
 
+local getter = function (key)
+   return getters[key] or plugin_getter(key).submodule
+end
+
+local setter = function (key, value)
+   local plugin = plugin_getter(key)
+   plugin.default_setter(value)
+end
+
 return {
    setter = setter,
-   getter = function (key)
-      return getters[key] or plugin_getter(key)
-   end,
+   getter = getter,
 }

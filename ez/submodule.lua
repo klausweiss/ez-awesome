@@ -33,16 +33,21 @@ end
 
 -- setup function (function to be called after the whole setup)
 -- can be set under the /setup/ key in the exported table
+-- default setter (setter used e.g. here: ez.plugin_name = value)
+-- can be set under the /default_setter/ key in the exported table
 local submodule = function (module_)
    local meta_table = table_dispatcher(module_)
-   local setup = module_.setup
    local submodule_ = setmetatable({}, meta_table)
 
    if module_.export then
       set_global_variables(module_.export, submodule_)
    end
 
-   return submodule_, setup
+   local submodule_metadata = {
+      default_setter = module_.default_setter,
+      setup = module_.setup
+   }
+   return submodule_, submodule_metadata
 end
 
 return submodule
