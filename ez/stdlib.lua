@@ -19,6 +19,11 @@ return {
       end,
    extendtable = function (t1, t2) for _, v in pairs(t2) do table.insert(t1, v) end
    end,
+   fileexists = function (path)
+      local f = io.open(path)
+      if f then f:close() end
+      return f and true or false
+   end,
    jointables = function (...)
       args = { ... }
       local newtable = {}
