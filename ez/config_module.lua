@@ -2,30 +2,11 @@ local awful         = require("awful")
 local plugin_loader = require("ez.plugins._loader")
 
 
--- Setup functions need to be called in order (ez.theme needs to be loaded first)
-local ordered_setup_functions = {}
 local cached_plugins = {}
+-- Setup functions need to be called in particular order
+-- (ez.theme needs to be loaded first)
+local cached_plugins_ordered = {}
 
-
-local reapply_client_rules = function ()
-   for _, client_ in ipairs(client.get()) do
-      awful.rules.apply(client_)
-   end
-end
-
-local getters = {
-   setup = function()
-      for _, setup_function in ipairs(ordered_setup_functions) do
-	 setup_function()
-      end
-      reapply_client_rules()
-   end,
-}
-
-local add_setup_function = function (setup_function)
-   -- Loaded plugins are cached, so each setup functions is added exactly once
-   table.insert(ordered_setup_functions, setup_function)
-end
 
 -- Lazily loads plugin
 local plugin_getter = function (key)
@@ -36,30 +17,51 @@ local plugin_getter = function (key)
 	 submodule_, submodule_metadata = plugin_loader(key)
    end)
    if status then
-      if submodule_metadata.setup then
-	 add_setup_function(submodule_metadata.setup)
-      end
       local plugin = {
 	 submodule = submodule_,
-	 default_setter = submodule_metadata.default_setter,
+	 metadata  = submodule_metadata,
       }
       cached_plugins[key] = plugin
+      table.insert(cached_plugins_ordered, plugin)
       return plugin
    else
       error("Couldn't load plugin " .. key .. ". Cause:\n" .. error_)
    end
 end
 
-local getter = function (key)
-   return getters[key] or plugin_getter(key).submodule
+local reapply_client_rules = function ()
+   for _, client_ in ipairs(client.get()) do
+      awful.rules.apply(client_)
+   end
 end
 
+-- if plugin exports /setup/ function, it will be called
+-- after configuration is done
+local setup = function()
+   for _, plugin in ipairs(cached_plugins_ordered) do
+      if plugin.metadata.setup then
+	 plugin.metadata.setup()
+      end
+   end
+   reapply_client_rules()
+end
+
+local getter = function (key)
+   return plugin_getter(key).submodule
+end
+
+-- if plugin exports /default_setter/ function, it will be called
+-- when assigning value to the plugin:
+--
+--   ez.plugin = value
+--
 local setter = function (key, value)
    local plugin = plugin_getter(key)
-   plugin.default_setter(value)
+   plugin.metadata.default_setter(value)
 end
 
 return {
-   setter = setter,
    getter = getter,
+   setter = setter,
+   setup  = setup,
 }

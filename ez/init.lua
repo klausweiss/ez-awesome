@@ -19,16 +19,16 @@ local load_default_plugins = function(ez_)
    _ = ez_.widgets
 end
 
-local init_ez = function (ez_)
+local init_ez = function (ez, ez_raw)
    -- prevent recursively calling this function while importing module
    if __ez_initiated then return end
    __ez_initiated = true
 
-   load_default_plugins(ez_)
-   awesome.connect_signal("startup", ez_.setup)
+   load_default_plugins(ez)
+   awesome.connect_signal("startup", ez_raw.setup)
 end
 
-local ez = submodule(config_module)
-init_ez(ez)
+local ez, ez_raw = submodule(config_module)
+init_ez(ez, ez_raw)
 
 return ez

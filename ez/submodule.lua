@@ -1,16 +1,16 @@
--- support plugins returning a setter function
--- taking parameters key and value
+-- if a plugin exports a /setter/ function, it will be called
+-- with /key/ and /value/ as parameters when assigning a value:
 --
--- ez.plugin.key = value
+--   ez.plugin.key = value
 --
--- and a getter table or function
--- taking parameter key
+-- if it exports a /getter/ function, it will be called
+-- with /key/ as a parameter when getting a value:
 --
--- local value = ez.plugin.key
+--   local value = ez.plugin.key
 --
-local table_dispatcher = function (module_)
-   local setter = module_.setter
-   local getter = module_.getter
+local table_dispatcher = function (raw_module_)
+   local setter = raw_module_.setter
+   local getter = raw_module_.getter
 
    -- support table of constants and a getter function
    local type_getters = {}
@@ -24,30 +24,23 @@ local table_dispatcher = function (module_)
    }
 end
 
-local set_global_variables = function (exported_variables, submodule_)
+local export_variables_to_global_scope = function (exported_variables, submodule_)
    for _, variable in pairs(exported_variables) do
       _G[variable] = submodule_[variable]
    end
 end
 
-
--- setup function (function to be called after the whole setup)
--- can be set under the /setup/ key in the exported table
--- default setter (setter used e.g. here: ez.plugin_name = value)
--- can be set under the /default_setter/ key in the exported table
-local submodule = function (module_)
-   local meta_table = table_dispatcher(module_)
+-- module variables defined in `raw_module_.export`
+-- will be exported to the global scope
+local submodule = function (raw_module_)
+   local meta_table = table_dispatcher(raw_module_)
    local submodule_ = setmetatable({}, meta_table)
 
-   if module_.export then
-      set_global_variables(module_.export, submodule_)
+   if raw_module_.export then
+      export_variables_to_global_scope(raw_module_.export, submodule_)
    end
 
-   local submodule_metadata = {
-      default_setter = module_.default_setter,
-      setup = module_.setup
-   }
-   return submodule_, submodule_metadata
+   return submodule_, raw_module_
 end
 
 return submodule
