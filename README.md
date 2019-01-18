@@ -86,7 +86,7 @@ Setter | Parameters | Value | Description
 `ez.mouse.client_BUTTON[keys_combo]` | `BUTTON` can be `wheel_up`, `wheel_down`, `wheel_click`, `click`, `left_click` or `right_click`. `keys_combo` should be a table with _modifiers_ | `fun (client) -> ()` | `fun` will be called after the button has been clicked on the client while pressing `keys_combo` modifiers.
 `ez.rules[WINDOW_CLASS].PROPERTY` | `WINDOW_CLASS` is an X11 class that should match, `PROPERTY` is property to be set (as in `awful.rules`) | `any` | Adds a rule for a window of the given class to set the property to the given value.
 `ez.tags` | | `table[string]` | Strings in `table` will be names of tags.
-`ez.theme` | | `string` | Sets theme (accepts path to it's `.lua` file).
+`ez.theme` | | `string` | Sets theme (accepts either theme name or path to it's dir or it's `theme.lua` file). If name is given, ez looks for it in `gears.filesystem.get_themes_dir()` and in `~/.config/awesome/themes/`.
 `ez.theme.gaps` | | `int` | Sets gaps between clients. Ignores size hints given by windows as a side effect.
 `ez.theme.wallpaper` | | `string` | Sets wallpaper for each screen to an image under given path.
 `ez.wibar.position` | | `position` | Position, where `wibar` will be placed.

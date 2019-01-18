@@ -49,9 +49,28 @@ local path_config_setter = function(property_name)
    end
 end
 
+local theme_setter = function (value)
+   local path_candidates = {
+      stdlib.expandhome("~/.config/awesome/themes/" .. value .. "/theme.lua"),
+      gears.filesystem.get_themes_dir() .. value .. "/theme.lua",
+      value .. "/theme.lua",
+      value,
+   }
+   local _config_setter = config_setter("theme")
+
+   for _, path in ipairs(path_candidates) do
+      if stdlib.fileexists(path) then
+	 _config_setter(path)
+	 return
+      end
+   end
+
+   io.stderr:write("theme " .. value .. " not found\n")
+end
+
 local setters = {
    gaps      = config_setter("gaps"),
-   theme     = path_config_setter("theme"),
+   theme     = theme_setter,
    wallpaper = path_config_setter("wallpaper"),
 }
 

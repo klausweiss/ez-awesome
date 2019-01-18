@@ -11,19 +11,23 @@ return {
 	    end,
       })
    end,
+
    expandhome = function (path)
       if path:sub(1, 1) == "~" then
 	 return os.getenv("HOME") .. path:sub(2)
       end
       return path
-      end,
+   end,
+
    extendtable = function (t1, t2) for _, v in pairs(t2) do table.insert(t1, v) end
    end,
+
    fileexists = function (path)
       local f = io.open(path)
       if f then f:close() end
       return f and true or false
    end,
+
    jointables = function (...)
       args = { ... }
       local newtable = {}
@@ -34,6 +38,7 @@ return {
       end
       return newtable
    end,
+
    joindicts = function (...)
       args = { ... }
       local newdict = {}
@@ -44,10 +49,15 @@ return {
       end
       return newdict
    end,
+
    noop = function (...) end,
+
    settertable = function (setter) return setmetatable({}, {
 	    __newindex = function (t, k, v) setter(k, v) end
    }) end,
-   slice = function (t, a, b) newt = {} for i=a,b do table.insert(newt, t[i]) end return newt end,
+
+   slice = function (t, a, b) newt = {} for i=a,b do table.insert(newt, t[i]) end return newt
+	   end,
+
    tablefactory = function () return {} end,
 }
