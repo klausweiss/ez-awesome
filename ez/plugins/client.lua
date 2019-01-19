@@ -6,6 +6,28 @@ local ez     = require("ez")
 local mouse  = ez.mouse
 
 
+local buttons = {
+   close    = awful.titlebar.widget.closebutton,
+   icon     = awful.titlebar.widget.iconwidget,
+   floating = awful.titlebar.widget.floatingbutton,
+   maximize = awful.titlebar.widget.maximizedbutton,
+   minimize = awful.titlebar.widget.minimizebutton,
+   ontop    = awful.titlebar.widget.ontopbutton,
+   sticky   = awful.titlebar.widget.stickybutton,
+   title    = awful.titlebar.widget.titlewidget,
+}
+
+local titlebar_config = {
+   left_widgets_factories = {
+      awful.titlebar.widget.iconwidget,
+   },
+   right_widgets_factories = {
+      awful.titlebar.widget.minimizebutton,
+      awful.titlebar.widget.maximizedbutton,
+      awful.titlebar.widget.closebutton,
+   },
+}
+
 local focus_next = function () awful.client.focus.byidx( 1) end
 local focus_prev = function () awful.client.focus.byidx(-1) end
 
@@ -95,31 +117,37 @@ local handler_request_titlebars = function (client_)
       awful.button({}, mouse._buttons_numbers.right_click, resize_client)
    )
 
-   -- TODO: allow configuration
-  awful.titlebar(client_):setup {
-    layout = wibox.layout.align.horizontal,
-    { -- Left
+   local left = {
       buttons = titlebar_mouse_handlers,
       layout  = wibox.layout.fixed.horizontal,
-      awful.titlebar.widget.iconwidget(client_),
-    },
-    { -- Middle
-      { -- Title
+   }
+   for _, widget_factory in ipairs(titlebar_config.left_widgets_factories) do
+      table.insert(left, widget_factory(client_))
+   end
+
+
+   local middle = {
+      buttons = titlebar_mouse_handlers,
+      layout  = wibox.layout.flex.horizontal,
+      {
         align  = "center",
         widget = awful.titlebar.widget.titlewidget(client_)
       },
-      buttons = titlebar_mouse_handlers,
-      layout  = wibox.layout.flex.horizontal,
-    },
-    { -- Right
+   }
+
+   local right = {
       layout = wibox.layout.fixed.horizontal,
-      awful.titlebar.widget.floatingbutton (client_),
-      awful.titlebar.widget.maximizedbutton(client_),
-      awful.titlebar.widget.stickybutton   (client_),
-      awful.titlebar.widget.ontopbutton    (client_),
-      awful.titlebar.widget.closebutton    (client_),
-    },
-  }
+   }
+   for _, widget_factory in ipairs(titlebar_config.right_widgets_factories) do
+      table.insert(right, widget_factory(client_))
+   end
+
+   awful.titlebar(client_):setup {
+    layout = wibox.layout.align.horizontal,
+    left,
+    middle,
+    right,
+   }
 end
 
 local signals = stdlib.settertable(function (signal, handler)
@@ -163,16 +191,31 @@ end
 local setter = {
    focus_follow_mouse = function (value)
       clients_config.focus_follow_mouse = value
-   end
+   end,
+   titlebar_left = function (value)
+      titlebar_config.left_widgets_factories = value
+   end,
+   titlebar_right = function (value)
+      titlebar_config.right_widgets_factories = value
+   end,
+}
+
+local nested_setters = {
+   titlebar = stdlib.settertable(function (key, value)
+	 setter["titlebar_" .. key](value)
+   end),
 }
 
 local setters = function (key, value) return setter[key](value) end
 
 return {
-   getter = functions,
+   getter = stdlib.joindicts(buttons,
+			     functions,
+			     nested_setters),
    setter = setters,
    setup  = setup,
    export = {
+      -- functions
       "focus_next_client",
       "focus_prev_client",
       "focus_previous_client",
@@ -188,5 +231,15 @@ return {
 
       "restore_random_client",
       "restore_and_focus_random_client",
+
+      -- widgets
+      "close",
+      "icon",
+      "floating",
+      "maximize",
+      "minimize",
+      "ontop",
+      "sticky",
+      "title",
    }
 }
