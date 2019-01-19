@@ -76,6 +76,8 @@ The following properties can be used to configure awesomewm:
 Setter | Parameters | Value | Description
 ---    | ---        | ---   | --- 
 `ez.client.focus_follow_mouse` | | `bool` | If true, clients (X11 windows) will be focused when under the mouse pointer. 
+`ez.client.titlebar.left` | | `table[client_widget_factory]` | Widgets displayed at the left corner of the client titlebar. `client_widget_factory` is a function taking a `client`, returning a widget.
+`ez.client.titlebar.right` | | `table[client_widget_factory]` | Widgets displayed at the right corner of the client titlebar. `client_widget_factory` is a function taking a `client`, returning a widget.
 `ez.keyboard.global[keys_combo]` | `keys_combo` should be a table with _modifiers_ as the first elements and non-_modifier_ as the last one. |`fun () -> ()` | `fun` will be called after the `keys_combo` was pressed.
 `ez.keyboard.client[keys_combo]` | `keys_combo` should be a table with _modifiers_ as the first elements and non-_modifier_ as the last one. |`fun (client) -> ()` | `fun` will be called with the target client as a parameter after the `keys_combo` was pressed.
 `ez.keyboard.tags[keys_combo]` | `keys_combo` should be a table with _modifiers_ only. function `fun` should take a tag number as a parameter and return a new function taking no parameters. |`fun (index) -> () -> ()` | For each tag number (1-9) a keyboard shortcut is generated. Press `keys_combo` + tag number (1-9) to trigger it.
@@ -162,3 +164,11 @@ Variable | Type | Description
 `tray`             | widget_factory | System tray.
 `clock`            | widget_factory | Clock with date.
 `layouts_switcher` | widget_factory | Shows currently selected layout and allows to switch it.
+`close`    | client_widget_factory | Client close button.
+`icon`     | client_widget_factory | Client icon.
+`floating` | client_widget_factory | Toggle client floating button.
+`maximize` | client_widget_factory | Toggle client maximize button.
+`minimize` | client_widget_factory | Toggle client minize button.
+`ontop`    | client_widget_factory | Toggle client _on top_ button.
+`sticky`   | client_widget_factory | Toggle client sticky button.
+`title`    | client_widget_factory | Client title.
