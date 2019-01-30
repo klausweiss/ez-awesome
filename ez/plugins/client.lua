@@ -28,8 +28,12 @@ local titlebar_config = {
    },
 }
 
-local focus_next = function () awful.client.focus.byidx( 1) end
-local focus_prev = function () awful.client.focus.byidx(-1) end
+local focus_next  = function () awful.client.focus.byidx( 1) end
+local focus_prev  = function () awful.client.focus.byidx(-1) end
+local focus_up    = function () awful.client.focus.bydirection("up") end
+local focus_right = function () awful.client.focus.bydirection("right") end
+local focus_down  = function () awful.client.focus.bydirection("down") end
+local focus_left  = function () awful.client.focus.bydirection("left") end
 
 local functions = {
    toggle_focus_minimize_client = function (client_)
@@ -63,6 +67,10 @@ local functions = {
    focus_next_client     = focus_next,
    focus_prev_client     = focus_prev,
    focus_previous_client = focus_prev,
+   focus_up_client       = focus_up,
+   focus_right_client    = focus_right,
+   focus_down_client     = focus_down,
+   focus_left_client     = focus_left,
 
    move_client   = awful.mouse.client.move,
    resize_client = awful.mouse.client.resize,
@@ -219,6 +227,10 @@ return {
       "focus_next_client",
       "focus_prev_client",
       "focus_previous_client",
+      "focus_up_client",
+      "focus_right_client",
+      "focus_down_client",
+      "focus_left_client",
 
       "focus_client",
       "move_client",

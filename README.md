@@ -107,6 +107,10 @@ Function | Signature | Description
 `focus_client`                                 | `(client) -> ()` | Focuses client.
 `focus_next_client`                            | `() -> ()` | Focuses client right after the focused one.
 `focus_previous_client` or `focus_prev_client` | `() -> ()` | Focuses client right before the focused one.
+`focus_up_client`                              | `() -> ()` | Focuses upper client.
+`focus_right_client`                           | `() -> ()` | Focuses client to the right.
+`focus_down_client`                            | `() -> ()` | Focuses bottom client.
+`focus_left_client`                            | `() -> ()` | Focuses client to the left.
 `move_client`                                  | `(client) -> ()` | Starts moving client.
 `resize_client`                                | `(client) -> ()` | Starts resizing client.
 `restore_random_client`                        | `(client) -> ()` | Unminimizes random client.
