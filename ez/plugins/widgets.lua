@@ -65,6 +65,12 @@ local widget_factories = {
 
    date = function (_screen) return wibox.widget.textclock("%d %b") end,
 
+   text = function (text_)
+      return function (_screen)
+	 return wibox.widget.textbox(text_)
+      end
+   end,
+
    layouts_switcher = function (screen)
       local layoutbox_buttons = stdlib.jointables(
 	 awful.button({}, mouse._buttons_numbers.left_click,  layouts.next_layout),
@@ -90,6 +96,7 @@ return {
       "tray",
       "time",
       "date",
+      "text",
       "layouts_switcher",
    }
 }
