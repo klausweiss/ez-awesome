@@ -162,12 +162,14 @@ Variable | Type | Description
 `select_main_client` | layout | `awful.layout.suit.select_main_client`
 `bottom` | position | Bottom.
 `top`    | position | Top.
-`launcher_menu`    | widget_factory | Widget showing awesome menu.
-`taglist`          | widget_factory | Allows to switch and toggle tags.
-`tasklist`         | widget_factory | Allows to minimize and focus clients.
-`tray`             | widget_factory | System tray.
-`clock`            | widget_factory | Clock with date.
-`layouts_switcher` | widget_factory | Shows currently selected layout and allows to switch it.
+`launcher_menu`    |           widget_factory | Widget showing awesome menu.
+`taglist`          |           widget_factory | Allows to switch and toggle tags.
+`tasklist`         |           widget_factory | Allows to minimize and focus clients.
+`tray`             |           widget_factory | System tray.
+`time`             |           widget_factory | Current time.
+`date`             |           widget_factory | Current date.
+`text`             | string -> widget_factory | Arbitrary text.
+`layouts_switcher` |           widget_factory | Shows currently selected layout and allows to switch it.
 `close`    | client_widget_factory | Client close button.
 `icon`     | client_widget_factory | Client icon.
 `floating` | client_widget_factory | Toggle client floating button.
