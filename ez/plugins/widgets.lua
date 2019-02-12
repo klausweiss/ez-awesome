@@ -61,7 +61,7 @@ local widget_factories = {
 
    tray = function (_screen) return wibox.widget.systray() end,
 
-   clock = function (_screen) return wibox.widget.textclock() end,
+   time = function (_screen) return wibox.widget.textclock("%H:%M") end,
 
    layouts_switcher = function (screen)
       local layoutbox_buttons = stdlib.jointables(
@@ -86,7 +86,7 @@ return {
       "taglist",
       "tasklist",
       "tray",
-      "clock",
+      "time",
       "layouts_switcher",
    }
 }
