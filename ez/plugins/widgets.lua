@@ -63,6 +63,8 @@ local widget_factories = {
 
    time = function (_screen) return wibox.widget.textclock("%H:%M") end,
 
+   date = function (_screen) return wibox.widget.textclock("%d %b") end,
+
    layouts_switcher = function (screen)
       local layoutbox_buttons = stdlib.jointables(
 	 awful.button({}, mouse._buttons_numbers.left_click,  layouts.next_layout),
@@ -87,6 +89,7 @@ return {
       "tasklist",
       "tray",
       "time",
+      "date",
       "layouts_switcher",
    }
 }
