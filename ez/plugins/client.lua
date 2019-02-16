@@ -146,7 +146,6 @@ local handler_request_titlebars = function (client_)
 
    local right = stdlib.joindicts(
       {
-	 buttons = titlebar_mouse_handlers,
 	 layout  = wibox.layout.fixed.horizontal,
       },
       stdlib.map(function (factory) return factory(client_) end,
