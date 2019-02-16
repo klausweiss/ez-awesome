@@ -1,4 +1,4 @@
-# awesome-ez
+# ez-awesome
 
 Lua library that simplifies [awesome](https://awesomewm.org/) configuration. It comes preconfigured with some settings. 
 Targeted at people who prefer more declarative way of configuration than using the Lua language.
