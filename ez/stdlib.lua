@@ -62,6 +62,14 @@ return {
       return keys
    end,
 
+   map = function (f, table_)
+      local new_table = {}
+      for k, v in pairs(table_) do
+	 new_table[k] = f(v)
+      end
+      return new_table
+   end,
+
    noop = function (...) end,
 
    settertable = function (setter) return setmetatable({}, {
