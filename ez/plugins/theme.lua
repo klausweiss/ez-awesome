@@ -9,6 +9,8 @@ local config = {
    wallpaper = nil,
 }
 
+local config_override = {}
+
 local init_theme = function ()
    beautiful.init(config.theme)
 end
@@ -38,8 +40,18 @@ local init_wallpaper = function ()
    end
 end
 
+local override_settings = function ()
+   for key, value in pairs(config_override) do
+      beautiful.get()[key] = value
+   end
+end
+
 local config_setter = function (property_name)
    return function (value) config[property_name] = value end
+end
+
+local override_setter = function (property_name)
+   return function (value) config_override[property_name] = value end
 end
 
 local path_config_setter = function(property_name)
@@ -74,13 +86,17 @@ local setters = {
    wallpaper = path_config_setter("wallpaper"),
 }
 
-local setter = function (key, value) return setters[key](value) end
+local setter = function (key, value)
+   local setter = setters[key] or override_setter(key)
+   return setter(value)
+end
 
 local setup = function ()
    init_theme()
 
    init_gaps()
    init_wallpaper()
+   override_settings()
 end
 
 return {
