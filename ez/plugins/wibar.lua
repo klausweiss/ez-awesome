@@ -33,7 +33,14 @@ local setup_wibar = function (screen)
 
    wibar:setup({
 	 {
-	    left, middle, right,
+	    left,
+	    {
+	       middle,
+	       left = 10,
+	       right = 10,
+	       widget = wibox.container.margin,
+	    },
+	    right,
 
 	    layout = wibar_config.layout,
 	 },
