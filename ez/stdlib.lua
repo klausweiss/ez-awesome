@@ -28,6 +28,12 @@ return {
       return f and true or false
    end,
 
+   getter = function (table_)
+      return function (key)
+	 return table_[key]
+      end
+   end,
+
    jointables = function (...)
       args = { ... }
       local newtable = {}
