@@ -1,6 +1,14 @@
 local wibox = require("wibox")
 
+local common = require("ez.plugins.widgets.common")
+
 
 return function (_screen)
-   return wibox.widget.textclock("%d %b")
+   return common.mkwidget(
+      common.texticon_box("",
+			  {
+			     widget = wibox.widget.textclock("%a, %d %b"),
+			  }
+      )
+   )
 end
