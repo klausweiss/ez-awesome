@@ -4,14 +4,6 @@ local a_layouts = awful.layout.suit
 local stdlib = require("ez.stdlib")
 
 
-local setters = {
-   layouts = function (value)
-      awful.layout.layouts = value
-   end
-}
-
-local setter = function (key, value) return setters[key](value) end
-
 local layouts = {
    tile        = a_layouts.tile,
    tile_right  = a_layouts.tile,
@@ -39,6 +31,14 @@ local layouts = {
    nw = a_layouts.corner.nw,
 }
 
+local setters = {
+   layouts = function (layouts_)
+      awful.layout.layouts = stdlib.map(stdlib.getter(layouts), layouts_)
+   end
+}
+
+local setter = function (key, value) return setters[key](value) end
+
 local functions = {
    next_layout        = function () awful.layout.inc( 1) end,
    prev_layout        = function () awful.layout.inc(-1) end,
@@ -46,7 +46,7 @@ local functions = {
 }
 functions.previous_layout = functions.prev_layout
 
-local properties = stdlib.joindicts(layouts,
+local properties = stdlib.joindicts(stdlib.keys(layouts),
 				    functions)
 
 return {
@@ -54,35 +54,6 @@ return {
    default_setter = setters.layouts,
    getter = properties,
    -- tags.lua depends on this module not exporting a setup function
-   export = {
-      "tile",
-      "tile_right",
-      "tile_left",
-      "tile_up",
-      "tile_bottom",
-
-      "fair",
-      "fair_vertical",
-      "fair_horizontal",
-
-      "spiral",
-      "spiral_dwindle",
-
-      "magnifier",
-
-      "floating",
-
-      "max",
-      "fullscreen",
-
-      "ne",
-      "se",
-      "sw",
-      "nw",
-
-      "next_layout",
-      "prev_layout",
-      "previous_layout",
-      "select_main_client",
-   }
+   export = stdlib.joindicts(stdlib.keys(layouts),
+			     stdlib.keys(functions)),
 }
