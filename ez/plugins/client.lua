@@ -6,7 +6,7 @@ local ez     = require("ez")
 local mouse  = ez.mouse
 
 
-local buttons = {
+local widgets = {
    close    = awful.titlebar.widget.closebutton,
    icon     = awful.titlebar.widget.iconwidget,
    floating = awful.titlebar.widget.floatingbutton,
@@ -19,12 +19,12 @@ local buttons = {
 
 local titlebar_config = {
    left_widgets_factories = {
-      awful.titlebar.widget.iconwidget,
+      "icon",
    },
    right_widgets_factories = {
-      awful.titlebar.widget.minimizebutton,
-      awful.titlebar.widget.maximizedbutton,
-      awful.titlebar.widget.closebutton,
+      "minimize",
+      "maximize",
+      "close",
    },
 }
 
@@ -91,7 +91,7 @@ local clients_config = {
 
 -- called after a new client appears
 local handler_manage = function (client_)
-  -- Prevent clients from being unreachable after screen count changes.
+   -- Prevent clients from being unreachable after screen count changes.
    if awesome.startup and
       not client_.size_hints.user_position and
       not client_.size_hints.program_position
@@ -109,10 +109,10 @@ local handler_unfocus = function (client_)
 end
 
 local handler_mouse_enter = function (client_)
-  if awful.layout.get(client_.screen) ~= awful.layout.suit.magnifier
-    and awful.client.focus.filter(client_) then
-    client.focus = client_
-  end
+   if awful.layout.get(client_.screen) ~= awful.layout.suit.magnifier
+   and awful.client.focus.filter(client_) then
+      client.focus = client_
+   end
 end
 
 local handler_request_titlebars = function (client_)
@@ -125,37 +125,41 @@ local handler_request_titlebars = function (client_)
       awful.button({}, mouse._buttons_numbers.right_click, resize_client)
    )
 
-   local left = {
-      buttons = titlebar_mouse_handlers,
-      layout  = wibox.layout.fixed.horizontal,
-   }
-   for _, widget_factory in ipairs(titlebar_config.left_widgets_factories) do
-      table.insert(left, widget_factory(client_))
-   end
-
+   local left = stdlib.joindicts(
+      {
+	 buttons = titlebar_mouse_handlers,
+	 layout  = wibox.layout.fixed.horizontal,
+      },
+      stdlib.map(function (factory) return factory(client_) end,
+	 stdlib.map(stdlib.getter(widgets), titlebar_config.left_widgets_factories)
+      )
+   )
 
    local middle = {
       buttons = titlebar_mouse_handlers,
       layout  = wibox.layout.flex.horizontal,
       {
-        align  = "center",
-        widget = awful.titlebar.widget.titlewidget(client_)
+	 align  = "center",
+	 widget = awful.titlebar.widget.titlewidget(client_)
       },
    }
 
-   local right = {
-      layout = wibox.layout.fixed.horizontal,
-   }
-   for _, widget_factory in ipairs(titlebar_config.right_widgets_factories) do
-      table.insert(right, widget_factory(client_))
-   end
+   local right = stdlib.joindicts(
+      {
+	 buttons = titlebar_mouse_handlers,
+	 layout  = wibox.layout.fixed.horizontal,
+      },
+      stdlib.map(function (factory) return factory(client_) end,
+	 stdlib.map(stdlib.getter(widgets), titlebar_config.right_widgets_factories)
+      )
+   )
 
    awful.titlebar(client_):setup {
-    layout = wibox.layout.align.horizontal,
-    left,
-    middle,
-    right,
-   }
+      layout = wibox.layout.align.horizontal,
+      left,
+      middle,
+      right,
+				 }
 end
 
 local signals = stdlib.settertable(function (signal, handler)
@@ -217,41 +221,12 @@ local nested_setters = {
 local setters = function (key, value) return setter[key](value) end
 
 return {
-   getter = stdlib.joindicts(buttons,
+   getter = stdlib.joindicts(stdlib.keys(widgets),
 			     functions,
 			     nested_setters),
    setter = setters,
    setup  = setup,
-   export = {
-      -- functions
-      "focus_next_client",
-      "focus_prev_client",
-      "focus_previous_client",
-      "focus_up_client",
-      "focus_right_client",
-      "focus_down_client",
-      "focus_left_client",
-
-      "focus_client",
-      "move_client",
-      "resize_client",
-
-      "close_client",
-      "toggle_focus_minimize_client",
-      "toggle_fullscreen_client",
-      "toggle_maximize_client",
-
-      "restore_random_client",
-      "restore_and_focus_random_client",
-
-      -- widgets
-      "close",
-      "icon",
-      "floating",
-      "maximize",
-      "minimize",
-      "ontop",
-      "sticky",
-      "title",
-   }
+   export = stdlib.joindicts(stdlib.keys(widgets),
+			     stdlib.keys(functions),
+			     stdlib.keys(nested_setters))
 }
