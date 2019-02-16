@@ -56,6 +56,12 @@ return {
       return newdict
    end,
 
+   keys = function (table_)
+      local keys = {}
+      for k, _ in pairs(table_) do keys[k] = k end
+      return keys
+   end,
+
    noop = function (...) end,
 
    settertable = function (setter) return setmetatable({}, {
