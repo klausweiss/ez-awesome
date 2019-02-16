@@ -18,6 +18,7 @@ local wibar_config = {
 local make_widgets = function (screen, widget_factories, layout)
    local widgets = {
       layout = layout,
+      spacing = 10,
    }
    for _, widget_factory in pairs(widget_factories) do table.insert(widgets, widget_factory(screen)) end
    return widgets
@@ -31,8 +32,14 @@ local setup_wibar = function (screen)
    local right  = make_widgets(screen, wibar_config.right,  wibox.layout.fixed.horizontal)
 
    wibar:setup({
-	 layout = wibar_config.layout,
-	 left, middle, right,
+	 {
+	    left, middle, right,
+
+	    layout = wibar_config.layout,
+	 },
+
+	 top = 5,
+	 layout = wibox.container.margin,
    })
 end
 
