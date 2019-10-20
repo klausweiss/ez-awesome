@@ -77,6 +77,7 @@ Setter | Parameters | Value | Description
 ---    | ---        | ---   | --- 
 `ez.client.focus_follow_mouse` | | `bool` | If true, clients (X11 windows) will be focused when under the mouse pointer. 
 `ez.client.titlebar.left` | | `table[client_widget_factory]` | Widgets displayed at the left corner of the client titlebar. `client_widget_factory` is a function taking a `client`, returning a widget.
+`ez.client.titlebar.middle` | | `table[client_widget_factory]` | Widgets displayed in the middle of the client titlebar. `client_widget_factory` is a function taking a `client`, returning a widget.
 `ez.client.titlebar.right` | | `table[client_widget_factory]` | Widgets displayed at the right corner of the client titlebar. `client_widget_factory` is a function taking a `client`, returning a widget.
 `ez.keyboard.global[keys_combo]` | `keys_combo` should be a table with _modifiers_ as the first elements and non-_modifier_ as the last one. |`fun () -> ()` | `fun` will be called after the `keys_combo` was pressed.
 `ez.keyboard.client[keys_combo]` | `keys_combo` should be a table with _modifiers_ as the first elements and non-_modifier_ as the last one. |`fun (client) -> ()` | `fun` will be called with the target client as a parameter after the `keys_combo` was pressed.

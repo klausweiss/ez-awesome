@@ -14,12 +14,15 @@ local widgets = {
    minimize = awful.titlebar.widget.minimizebutton,
    ontop    = awful.titlebar.widget.ontopbutton,
    sticky   = awful.titlebar.widget.stickybutton,
-   title    = awful.titlebar.widget.titlewidget,
+   title    = function (c) return { align = "center", widget = awful.titlebar.widget.titlewidget(c) } end,
 }
 
 local titlebar_config = {
    left_widgets_factories = {
       "icon",
+   },
+   middle_widgets_factories = {
+      "title",
    },
    right_widgets_factories = {
       "minimize",
@@ -135,14 +138,15 @@ local handler_request_titlebars = function (client_)
       )
    )
 
-   local middle = {
-      buttons = titlebar_mouse_handlers,
-      layout  = wibox.layout.flex.horizontal,
+   local middle = stdlib.joindicts(
       {
-	 align  = "center",
-	 widget = awful.titlebar.widget.titlewidget(client_)
+	 buttons = titlebar_mouse_handlers,
+	 layout  = wibox.layout.flex.horizontal,
       },
-   }
+      stdlib.map(function (factory) return factory(client_) end,
+	 stdlib.map(stdlib.getter(widgets), titlebar_config.middle_widgets_factories)
+      )
+   )
 
    local right = stdlib.joindicts(
       {
@@ -205,6 +209,9 @@ local setter = {
    end,
    titlebar_left = function (value)
       titlebar_config.left_widgets_factories = value
+   end,
+   titlebar_middle = function (value)
+      titlebar_config.middle_widgets_factories = value
    end,
    titlebar_right = function (value)
       titlebar_config.right_widgets_factories = value
