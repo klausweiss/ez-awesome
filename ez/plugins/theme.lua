@@ -33,6 +33,10 @@ local init_gaps = function ()
 end
 
 local init_wallpaper = function ()
+   if not config.wallpaper then
+      config.wallpaper = beautiful.wallpaper
+   end
+
    if config.wallpaper then
       awful.screen.connect_for_each_screen(function (s)
 	    gears.wallpaper.maximized(config.wallpaper, s)
