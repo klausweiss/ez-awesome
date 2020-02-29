@@ -18,35 +18,28 @@ local wibar_config = {
 local make_widgets = function (screen, widget_factories, layout)
    local widgets = {
       layout = layout,
-      spacing = 10,
+      -- spacing = 10,
    }
    for _, widget_factory in pairs(widget_factories) do table.insert(widgets, widget_factory(screen)) end
    return widgets
 end
 
 local setup_wibar = function (screen)
-   local wibar = awful.wibar({ position = wibar_config.position, screen = screen })
+   local wibar = awful.wibar({
+	 position = wibar_config.position,
+	 screen = screen,
+	 height = 36,
+   })
 
    local left   = make_widgets(screen, wibar_config.left,   wibox.layout.fixed.horizontal)
-   local middle = make_widgets(screen, wibar_config.middle, wibox.layout.flex.horizontal)
+   local middle = make_widgets(screen, wibar_config.middle, wibox.layout.fixed.horizontal)
    local right  = make_widgets(screen, wibar_config.right,  wibox.layout.fixed.horizontal)
 
    wibar:setup({
-	 {
-	    left,
-	    {
-	       middle,
-	       left = 10,
-	       right = 10,
-	       widget = wibox.container.margin,
-	    },
-	    right,
-
-	    layout = wibar_config.layout,
-	 },
-
-	 top = 5,
-	 layout = wibox.container.margin,
+	 left,
+	 middle,
+	 right,
+	 layout = wibar_config.layout,
    })
 end
 
