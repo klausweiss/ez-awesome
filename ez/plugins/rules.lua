@@ -11,8 +11,12 @@ end
 
 local setup = function ()
    for client_class, properties in pairs(rules_config) do
+      rule = client_class
+      if type(client_class) == "string" then
+        rule = { class = client_class }
+      end
       table.insert(awful.rules.rules, {
-		      rule = { class = client_class },
+		      rule = rule,
 		      properties = properties })
    end
 end
@@ -22,4 +26,7 @@ local getter = function (key) return property_setter(key) end
 return {
    getter = getter,
    setup  = setup,
+   export = {
+   	no_offscreen = awful.placement.no_offscreen
+   }
 }
